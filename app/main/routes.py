@@ -1,13 +1,15 @@
 from flask import render_template, redirect, url_for, request, current_app
 from app.main import bp
-from prometheus_client import Summary
+from prometheus_client import Summary, Counter
 import random
 import time
 
+c = Counter('http_access', 'Description of counter')
 
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/index', methods=['GET', 'POST'])
 def index():
+    c.inc()
     return render_template('index.html', title='Home')
 
 @bp.route('/time', methods=['GET', 'POST'])
