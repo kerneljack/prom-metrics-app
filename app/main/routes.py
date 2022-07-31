@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, request, current_app
+from flask import render_template
 from app.main import bp, metrics
 import time
 
@@ -9,8 +9,8 @@ import time
 def index():
     template = render_template('index.html', title='Home')
 
-    metrics.inc_http_success_counter()
-    metrics.inc_http_total_counter()
+    metrics.http_success_counter.inc()
+    metrics.http_total_counter.inc()
     return template
 
 @bp.route('/do_task', methods=['GET', 'POST'])
@@ -20,8 +20,8 @@ def do_task():
     process_request(5)
     template = render_template('do_task.html', title='Do task')
 
-    metrics.inc_http_success_counter()
-    metrics.inc_http_total_counter()
+    metrics.http_success_counter.inc()
+    metrics.http_total_counter.inc()
     return template
 
 
