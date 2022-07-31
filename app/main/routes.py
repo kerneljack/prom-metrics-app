@@ -1,27 +1,32 @@
 from flask import render_template, redirect, url_for, request, current_app
-from app.main import bp
-from prometheus_client import Summary, Counter
-import random
+from app.main import bp, metrics
 import time
-
-c = Counter('http_access', 'Description of counter')
 
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/index', methods=['GET', 'POST'])
+@metrics.http_request_time_summary.time()
+@metrics.http_request_time_histogram.time()
 def index():
-    c.inc()
-    return render_template('index.html', title='Home')
+    template = render_template('index.html', title='Home')
 
-@bp.route('/time', methods=['GET', 'POST'])
-def time():
-    return process_request(random.random())
+    metrics.inc_http_success_counter()
+    metrics.inc_http_total_counter()
+    return template
+
+@bp.route('/do_task', methods=['GET', 'POST'])
+@metrics.http_request_time_summary.time()
+@metrics.http_request_time_histogram.time()
+def do_task():
+    process_request(5)
+    template = render_template('do_task.html', title='Do task')
+
+    metrics.inc_http_success_counter()
+    metrics.inc_http_total_counter()
+    return template
 
 
-# Create a metric to track time spent and requests made.
-REQUEST_TIME = Summary('request_processing_seconds', 'Time spent processing request')
-
-# Decorate function with metric.
-@REQUEST_TIME.time()
+@metrics.http_request_time_summary.time()
+@metrics.http_request_time_histogram.time()
 def process_request(t):
     """A dummy function that takes some time."""
     time.sleep(t)
