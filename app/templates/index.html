@@ -4,16 +4,26 @@
 {% block content %}
 <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-10 border">aksjdsflkjsdfsdf</div>
-      <div class="col-sm-2 border">3.1415659499</div>
+      <div class="col-sm-10 border p-3">{{ metrics.http_success_counter._name }}</div>
+      <div class="col-sm-2 border p-3">{{ metrics.http_success_counter._value.get() }}</div>
     </div>
     <div class="row">
-      <div class="col-sm-10 border">aksjdsflkjsdfsdf</div>
-      <div class="col-sm-2 border">3.1415659499</div>
+      <div class="col-sm-10 border p-3">{{ metrics.http_total_counter._name }}</div>
+      <div class="col-sm-2 border p-3">{{ metrics.http_total_counter._value.get() }}</div>
     </div>
     <div class="row border">
-      <div class="col-sm-10 border">aksjdsflkjsdfsdf</div>
-      <div class="col-sm-2 border">3.1415659499</div>
+      <div class="col-sm-10 border p-3">{{ metrics.http_4xx_errors_counter._name }}</div>
+      <div class="col-sm-2 border p-3">{{ metrics.http_4xx_errors_counter._value.get() }}</div>
+    </div>
+    <div class="row border">
+      <div class="col-sm-10 border p-3">{{ metrics.http_5xx_errors_counter._name }}</div>
+      <div class="col-sm-2 border p-3">{{ metrics.http_5xx_errors_counter._value.get() }}</div>
+    </div>
+    <div class="row border">
+      {% for sample in metrics.http_request_time_histogram._child_samples() %}
+        <div class="col-sm-10 border p-3">{{ metrics.http_request_time_histogram._name }}{{ sample.name }} ({{ sample.labels['le'] }})</div>
+        <div class="col-sm-2 border p-3">{{ sample.value }}</div>
+      {% endfor %}
     </div>
   </div>
 {% endblock %}
