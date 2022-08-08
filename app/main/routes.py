@@ -7,8 +7,8 @@ import time
 @bp.route("/index", methods=["GET", "POST"])
 @metrics.http_request_time_histogram.time()
 def index():
-    metrics.http_success_counter.inc()
-    metrics.http_total_counter.inc()
+    metrics.http_successful_request.inc()
+    metrics.http_total_request.inc()
 
     return render_template("index.html", title="Home", metrics=metrics)
 
@@ -18,8 +18,8 @@ def index():
 def do_task():
     process_request(5)
 
-    metrics.http_success_counter.inc()
-    metrics.http_total_counter.inc()
+    metrics.http_successful_request.inc()
+    metrics.http_total_request.inc()
 
     return render_template("do_task.html", title="Do task", metrics=metrics)
 
