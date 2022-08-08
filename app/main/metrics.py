@@ -4,7 +4,7 @@ from prometheus_client import Summary, Counter, Histogram
 class Metrics:
     # success / total metrics
     http_successful_request = Counter("http_successful_request", "Successful HTTP counts")
-    http_total_request = Counter("http_total_request", "Total HTTP counts")
+    http_requests = Counter("http_requests", "Total HTTP counts")
 
     # error tracking metrics
     http_4xx_errors = Counter("http_error_4xx", "Description of counter")

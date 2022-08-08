@@ -8,7 +8,7 @@ import time
 @metrics.http_request_time_histogram.time()
 def index():
     metrics.http_successful_request.inc()
-    metrics.http_total_request.inc()
+    metrics.http_requests.inc()
 
     return render_template("index.html", title="Home", metrics=metrics)
 
@@ -19,7 +19,7 @@ def do_task():
     process_request(5)
 
     metrics.http_successful_request.inc()
-    metrics.http_total_request.inc()
+    metrics.http_requests.inc()
 
     return render_template("do_task.html", title="Do task", metrics=metrics)
 
