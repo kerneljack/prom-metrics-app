@@ -5,15 +5,17 @@ import time
 
 @bp.route("/", methods=["GET", "POST"])
 @bp.route("/index", methods=["GET", "POST"])
+@metrics.http_request_time_histogram.time()
 def index():
     metrics.http_successful_request.inc()
     metrics.http_requests.inc()
 
-    return test_func(metrics)
-
-@metrics.http_request_time_histogram.time()
-def test_func(metrics):
     return render_template("index.html", title="Home", metrics=metrics)
+
+@bp.route("/view_metrics", methods=["GET", "POST"])
+def view_metrics():
+    return render_template("view_metrics.html", title="View Metrics", metrics=metrics)
+
 
 
 @bp.route("/do_task", methods=["GET", "POST"])
