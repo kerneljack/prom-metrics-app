@@ -31,7 +31,7 @@ def create_app(config_class=Config):
             if not os.path.exists("logs"):
                 os.mkdir("logs")
             file_handler = RotatingFileHandler(
-                "logs/base-flask-app.log", maxBytes=10240, backupCount=10
+                "logs/prom-metrics-app.log", maxBytes=10240, backupCount=10
             )
             file_handler.setFormatter(
                 logging.Formatter(
@@ -43,6 +43,6 @@ def create_app(config_class=Config):
             app.logger.addHandler(file_handler)
 
         app.logger.setLevel(logging.INFO)
-        app.logger.info("base-flask-app startup")
+        app.logger.info("prom-metrics-app startup")
 
     return app
