@@ -18,6 +18,7 @@ A Flask demonstration application showcasing observability instrumentation patte
 - [Deployment](#deployment)
   - [Docker](#docker)
   - [Kubernetes with Helm](#kubernetes-with-helm)
+- [Testing](#testing)
 - [Architecture](#architecture)
 - [License](#license)
 
@@ -300,6 +301,33 @@ spec:
       interval: 30s
 ```
 
+## Testing
+
+The project includes a comprehensive test suite covering both metrics backends and tracing.
+
+```bash
+# Install dev dependencies
+pip install -r requirements-dev.txt
+
+# Run all tests
+pytest tests/ -v
+
+# Run with coverage report
+pytest tests/ --cov=app --cov-report=term-missing
+
+# Run specific test file
+pytest tests/test_metrics_prometheus.py -v
+```
+
+**Test Coverage:**
+
+| Module | Tests | Description |
+|--------|-------|-------------|
+| `test_metrics_prometheus.py` | 13 | Prometheus counters, histogram, summary |
+| `test_metrics_otel.py` | 15 | OTel counters, histogram, summary |
+| `test_metrics_factory.py` | 12 | Backend factory, singleton, interface |
+| `test_tracing.py` | 10 | Exporter selection, OTLP config |
+
 ## Architecture
 
 ```
@@ -319,12 +347,19 @@ prom-metrics-app/
 │   │   ├── __init__.py
 │   │   └── handlers.py
 │   └── templates/           # Jinja2 templates
+├── tests/                   # Unit tests
+│   ├── conftest.py          # Pytest fixtures
+│   ├── test_metrics_prometheus.py
+│   ├── test_metrics_otel.py
+│   ├── test_metrics_factory.py
+│   └── test_tracing.py
 ├── helm/                    # Kubernetes Helm chart
 ├── config.py                # Flask configuration
 ├── prom-metrics-app.py      # Application entry point
 ├── boot.sh                  # Container startup script
 ├── Dockerfile
-└── requirements.txt
+├── requirements.txt
+└── requirements-dev.txt     # Dev/test dependencies
 ```
 
 **Key design decisions:**
