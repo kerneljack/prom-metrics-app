@@ -8,3 +8,4 @@ load_dotenv(os.path.join(basedir, ".env"))
 
 class Config(object):
     LOG_TO_STDOUT = os.environ.get("LOG_TO_STDOUT")
+    METRICS_BACKEND = os.environ.get("METRICS_BACKEND", "prometheus")

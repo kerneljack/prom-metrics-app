@@ -4,25 +4,25 @@
 {% block content %}
 <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-10 border p-3">{{ metrics.http_successful_request._name }}</div>
-      <div class="col-sm-2 border p-3">{{ metrics.http_successful_request._value.get() }}</div>
+      <div class="col-sm-10 border p-3">{{ metrics_summary.http_successful_request.name }}</div>
+      <div class="col-sm-2 border p-3">{{ metrics_summary.http_successful_request.value }}</div>
     </div>
     <div class="row">
-      <div class="col-sm-10 border p-3">{{ metrics.http_requests._name }}</div>
-      <div class="col-sm-2 border p-3">{{ metrics.http_requests._value.get() }}</div>
+      <div class="col-sm-10 border p-3">{{ metrics_summary.http_requests.name }}</div>
+      <div class="col-sm-2 border p-3">{{ metrics_summary.http_requests.value }}</div>
     </div>
     <div class="row border">
-      <div class="col-sm-10 border p-3">{{ metrics.http_4xx_errors._name }}</div>
-      <div class="col-sm-2 border p-3">{{ metrics.http_4xx_errors._value.get() }}</div>
+      <div class="col-sm-10 border p-3">{{ metrics_summary.http_4xx_errors.name }}</div>
+      <div class="col-sm-2 border p-3">{{ metrics_summary.http_4xx_errors.value }}</div>
     </div>
     <div class="row border">
-      <div class="col-sm-10 border p-3">{{ metrics.http_5xx_errors._name }}</div>
-      <div class="col-sm-2 border p-3">{{ metrics.http_5xx_errors._value.get() }}</div>
+      <div class="col-sm-10 border p-3">{{ metrics_summary.http_5xx_errors.name }}</div>
+      <div class="col-sm-2 border p-3">{{ metrics_summary.http_5xx_errors.value }}</div>
     </div>
     <div class="row border">
-      {% for sample in metrics.http_request_time_histogram._child_samples() %}
-        <div class="col-sm-10 border p-3">{{ metrics.http_request_time_histogram._name }}{{ sample.name }} ({{ sample.labels['le'] }})</div>
-        <div class="col-sm-2 border p-3">{{ sample.value }}</div>
+      {% for bucket in metrics_summary.histogram_buckets %}
+        <div class="col-sm-10 border p-3">{{ bucket.name }} ({{ bucket.le }})</div>
+        <div class="col-sm-2 border p-3">{{ bucket.value }}</div>
       {% endfor %}
     </div>
   </div>

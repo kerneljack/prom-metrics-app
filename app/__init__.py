@@ -3,13 +3,15 @@ from logging.handlers import RotatingFileHandler
 import os
 from flask import Flask
 from config import Config
-from werkzeug.middleware.dispatcher import DispatcherMiddleware
-from prometheus_client import make_wsgi_app
+from app.tracing import init_tracing
+from app.metrics import get_backend_type
 
 
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
+
+    init_tracing(app)
 
     from app.errors import bp as errors_bp
 
@@ -19,8 +21,11 @@ def create_app(config_class=Config):
 
     app.register_blueprint(main_bp)
 
-    # Add prometheus wsgi middleware to route /metrics requests
-    app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {"/metrics": make_wsgi_app()})
+    # Add prometheus wsgi middleware to route /metrics requests (only for prometheus backend)
+    if get_backend_type() == "prometheus":
+        from werkzeug.middleware.dispatcher import DispatcherMiddleware
+        from prometheus_client import make_wsgi_app
+        app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {"/metrics": make_wsgi_app()})
 
     if not app.debug and not app.testing:
         if app.config["LOG_TO_STDOUT"]:
