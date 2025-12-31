@@ -28,6 +28,12 @@ def reset_metrics_singleton():
 
     app.metrics._metrics_instance = None
 
+    # Shutdown OpenTelemetry MeterProvider to stop background export threads
+    from opentelemetry import metrics
+    provider = metrics.get_meter_provider()
+    if hasattr(provider, 'shutdown'):
+        provider.shutdown()
+
 
 @pytest.fixture
 def prometheus_env(monkeypatch):
