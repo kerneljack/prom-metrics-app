@@ -1,3 +1,5 @@
 logs
 **pycache**
 venv
+.env
+.env.*

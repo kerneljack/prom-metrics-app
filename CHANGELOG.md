@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.3] - 2025-12-31
+
+### Security
+
+- Fix debug mode to use `FLASK_DEBUG` environment variable instead of hardcoded `True`
+- Add `SECRET_KEY` configuration with secure random fallback
+- Add `.env` and `.env.*` to `.gitignore` to prevent accidental secret commits
+- Update `python-dotenv` from 0.18.0 to >=1.0.0
+
 ## [0.2.2] - 2025-12-31
 
 ### Fixed
@@ -65,6 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Kubernetes Helm chart for cluster deployment
 - Basic error handlers for 404 and 500 responses
 
+[0.2.3]: https://github.com/kerneljack/prom-metrics-app/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/kerneljack/prom-metrics-app/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/kerneljack/prom-metrics-app/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/kerneljack/prom-metrics-app/compare/v0.1.0...v0.2.0
